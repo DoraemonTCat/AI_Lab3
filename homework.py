@@ -7,16 +7,16 @@ g.parse("mytourism.owl", format="xml")
 tourism = Namespace("http://www.my_ontology.edu/mytourism#")
 
 def get_province_mapping():
-    provinces = ["ChiangMai", "NakhonSawan", "Phitsanulok", "Pichit", "Uthaithani"]
+    provinces = ["ChiangMai", "NakhonSawan", "Phitsanulok", "Pichit", "Uthaithani"] #เอาไว้เช็คดูว่าในไฟล์ที่อัปโหลดมามีชื่อพวกนี้อยู่มั้ยและชื่อที่สอดคล้องกัน
     mapping = {}
     
     for province in provinces:
         province_uri = URIRef(f"http://www.my_ontology.edu/mytourism#{province}")
-        # Fetch Thai name
+       #ไว้ดูภาษาไทยนะ
         for thai_name in g.objects(province_uri, tourism.hasNameOfProvince):
             if isinstance(thai_name, Literal) and thai_name.language == "th":
                 mapping[str(thai_name)] = province
-        # Fetch English name
+        #ไว้ดูอังกฤษนะ
         for english_name in g.objects(province_uri, tourism.hasNameOfProvince):
             if isinstance(english_name, Literal) and (english_name.language == "en" or english_name.language is None):
                 mapping[str(english_name)] = province
@@ -51,7 +51,6 @@ def get_province_details(province_name, lang):
 
 st.set_page_config(page_title="ค้นหาจังหวัดในประเทศไทย", layout="wide")
 
-# Custom CSS for styling
 st.markdown("""
     <style>
     body {
@@ -110,7 +109,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Header
 st.markdown('<div class="header"><h1>ค้นหาจังหวัดในประเทศไทย</h1></div>', unsafe_allow_html=True)
 
 province_mapping = get_province_mapping()
