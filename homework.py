@@ -49,18 +49,9 @@ def get_province_details(province_name, lang):
     
     return details
 
-st.set_page_config(page_title="ค้นหาจังหวัดในประเทศไทย")
+st.set_page_config(page_title="ค้นหาจังหวัดในประเทศไทย", layout="wide")
 
-st.markdown("""
-            <style>
-            .CT{
-                text-align: center;
-              
-            }
-            """, unsafe_allow_html=True)
-st.markdown('<h1 class="CT">ค้นหาจังหวัดในประเทศไทย</h1>', unsafe_allow_html=True)
-
-
+# Custom CSS for styling
 st.markdown("""
     <style>
     body {
@@ -94,8 +85,33 @@ st.markdown("""
     .stRadio label {
         font-size: 18px;
     }
+    .header {
+        background-color: orange;
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        margin-bottom: 20px;
+        border: 2px solid black;
+    }
+    .province-details {
+        background-color: rgb(224, 159, 39);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+    }
+    .province-details h2 {
+        color:rgb(79, 88, 79);
+    }
+    .province-details p {
+        font-size: 8px;
+    }
     </style>
 """, unsafe_allow_html=True)
+
+# Header
+st.markdown('<div class="header"><h1>ค้นหาจังหวัดในประเทศไทย</h1></div>', unsafe_allow_html=True)
 
 province_mapping = get_province_mapping()
 
@@ -113,10 +129,12 @@ if province_input:
     if province_name:
         details = get_province_details(province_name, lang)
         if details:
-            st.write(f"รายละเอียดของจังหวัด {province_name}:")
+            st.markdown("""<hr style="border: 1px solid black;">""", unsafe_allow_html=True)
+            st.markdown(f'<div class="province-details"><h5>รายละเอียดของจังหวัด {province_name}</h5>', unsafe_allow_html=True)
             for key, value in details.items():
-                st.write(f"{key}: {value}")
+                st.markdown(f'<p><strong>{key}:</strong> {value}</p>', unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
         else:
-            st.write("ไม่พบข้อมูลจังหวัดนี้")
+            st.warning("ไม่พบข้อมูลจังหวัดนี้")
     else:
-        st.write("ไม่พบจังหวัดที่ตรงกับคำค้นหา")
+        st.error("ไม่พบจังหวัดที่ตรงกับคำค้นหา")
